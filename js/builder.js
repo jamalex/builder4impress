@@ -154,13 +154,9 @@ Builder=(function(){
   function downloadStyle(){
     var uriContent,content,$doc;
     
-    var BlobBuilder = (function(w) {
-      return w.BlobBuilder || w.WebKitBlobBuilder || w.MozBlobBuilder;
-    })(window);
     $.get('style.css', function (content) {
-      var bb = new BlobBuilder;
-      bb.append(content);
-      saveAs(bb.getBlob("text/css;charset=utf-8"), "style.css");
+      var blob = new Blob([content], {type: "text/css;charset=utf-8"});
+      saveAs(blob, "style.css");
     });
    
   }
@@ -168,9 +164,6 @@ Builder=(function(){
   function downloadResults(){
     var uriContent,content,$doc;
     
-    var BlobBuilder = (function(w) {
-      return w.BlobBuilder || w.WebKitBlobBuilder || w.MozBlobBuilder;
-    })(window);
     $doc=$(document.documentElement).clone();
     //remove all scripting
     $doc.find('script').remove();
@@ -183,10 +176,8 @@ Builder=(function(){
     //add impress.js simple init
     $doc.find('body').attr('class','impress-not-supported')[0].innerHTML+='<script src="https://raw.github.com/bartaz/impress.js/master/js/impress.js"></script><script>impress().init()</script>';
     content=$doc[0].outerHTML;
-    //remove stuff
-    var bb = new BlobBuilder;
-    bb.append(content);
-    saveAs(bb.getBlob("text/html;charset=utf-8"), "presentation.html");
+    var blob = new Blob([content], {type: "text/html;charset=utf-8"});
+    saveAs(blob, "presentation.html");
       
   }
   
